@@ -1,0 +1,24 @@
+name: PMD Check
+on: 
+  pull_request: 
+    branches: [ OrgSource ] # Only run for PRs targeting OrgSource
+
+jobs:
+  pmd:
+    runs-on: ubuntu-latest
+    permissions: read-all
+
+    steps:
+      # Checkout repository code
+      - uses: actions/checkout@v4
+
+      # Run PMD analysis
+      - name: Run PMD
+        uses: pmd/pmd-github-action@v2
+        with:
+          rulesets: 'config/ruleset.xml'           # Path to ruleset
+          sourcePath: 'force-app/main/default'     # Path to Salesforce metadata
+          version: latest
+          analyzeModifiedFilesOnly: true
+          createGitHubAnnotations: true
+          uploadSarifReport: false
